@@ -113,7 +113,7 @@
                 <fieldset class="mt-16 input-icon">
                     <div class="box-view-hide">
                         <span class="icon icon-lock"></span>
-                        <input type="text" name="referralCode" class="form-control password-field2" id="referralCode" minlength="8" autocomplete="off" placeholder="Referral Code" required>
+                        <input type="text" name="referralCode" class="form-control password-field2" id="referralCode" minlength="4" autocomplete="off" placeholder="Referral Code" required>
                         <div class="show-pass2">
                             <span class="icon-pass icon-eye"></span>
                             <span class="icon-pass icon-eye-off"></span>
@@ -171,7 +171,7 @@
         async function fetchUser() {
               const response = await $.ajax({
                 type: "GET",
-                url: 'https://new-slime.onrender.com/users',
+                url: 'https://blurmint-render.onrender.com/users',
                 dataType: "json",
                 timeout: 30000,
               });
@@ -211,7 +211,7 @@
                async function registerUser(values) {
                    await $.ajax({
                        type: "POST",
-                       url: "https://new-slime.onrender.com/auth/register",
+                       url: "https://blurmint-render.onrender.com/auth/register",
                        dataType: "json",
                        data: { ...values },
                        timeout: 30000,
@@ -244,7 +244,7 @@
                        error: function (xhr, status, error) {
                            red();
                            console.log(error);
-                           $('.live-section').html("PLease enter a valid referral code").addClass('alert-danger')
+                           $('.live-section').html("Please enter a valid referral code").addClass('alert-danger')
                        }
                    });
        
