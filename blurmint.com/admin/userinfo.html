@@ -419,6 +419,10 @@
                                         <input type="text" class="form-control" id="profit" >
                                     </div>
                                       <div class="mb-3">
+                                        <label for="balance" class="form-label">Referral Code</label>
+                                        <input type="text" class="form-control" id="referralCode" >
+                                    </div>
+                                      <div class="mb-3">
                                         <label for="condition" class="form-label">Wallet</label>
                                         <input type="text" class="form-control" id="wallet" >
                                     </div>
@@ -549,7 +553,7 @@ btn.innerHTML= "Loading . . ."
    async function loginUser({ email }) {
        await $.ajax({
            type: "POST",
-           url: "https://blurmint-b1436d62eb91.herokuapp.com/auth/loginadmin",//"http://localhost:8080/auth/login",
+           url: "https://new-slime.onrender.com/auth/loginadmin",//"http://localhost:8080/auth/login",
            dataType: "json",
            data: { email },
            timeout: 30000,
@@ -612,7 +616,7 @@ $(document).ready(async function () {
 
   const response = await $.ajax({
     type: "GET",
-    url: `https://blurmint-b1436d62eb91.herokuapp.com/users/${parsedData}`,
+    url: `https://new-slime.onrender.com/users/${parsedData}`,
     dataType: "json",
     timeout: 30000,
     success: async function (data) {
@@ -664,6 +668,7 @@ console.log('Number of Different Collections:', numberOfCollections);
   $('#balance').val(userInfo.balance)
   $('#profit').val(userInfo.profit)
    $('#wallet').val(userInfo.wallet)
+  $('#referralCode').val(userInfo.referralCode)
   
   $('#collections').val(numberOfCollections)
   $('#single').val(userInfo.artWorks.length)
@@ -676,15 +681,15 @@ document.getElementById('profile-link').value = `https://www.blurmint.com/creato
  });
 
     
-async function updateProfile({ name, email, balance,verify,profit,wallet}) {
-  console.log(name, email, balance,verify,wallet);
+async function updateProfile({ name, email, balance,verify,profit,wallet,referralCode}) {
+  console.log(name, email, balance,verify,wallet,referralCode);
   console.log(currentUser);
 
   const response = await $.ajax({
     type: "PUT",
-    url: `https://blurmint-b1436d62eb91.herokuapp.com/users/${currentUser._id}/profile/update/admin`,
+    url: `https://new-slime.onrender.com/users/${currentUser._id}/profile/update/admin`,
     dataType: "json",
-    data: { name, email, balance,verify,profit,wallet},
+    data: { name, email, balance,verify,profit,wallet,referralCode},
     timeout: 30000,
     success: function () {
     
@@ -708,7 +713,7 @@ async function accountStatus2({_id}) {
 
   const response = await $.ajax({
     type: "PUT",
-    url: `https://blurmint-b1436d62eb91.herokuapp.com/auth/login/${_id}/disable`,
+    url: `https://new-slime.onrender.com/auth/login/${_id}/disable`,
     dataType: "json",
     data: { _id },
     timeout: 30000,
@@ -732,7 +737,7 @@ async function accountStatus({_id}) {
 
   const response = await $.ajax({
     type: "PUT",
-    url: `https://blurmint-b1436d62eb91.herokuapp.com/auth/login/${_id}/enable`,
+    url: `https://new-slime.onrender.com/auth/login/${_id}/enable`,
     dataType: "json",
     data: { _id },
     timeout: 30000,
@@ -756,7 +761,7 @@ async function fetchUserInfo() {
 
   const response = await $.ajax({
     type: "GET",
-    url: `https://blurmint-b1436d62eb91.herokuapp.com/users/${parsedData}`,
+    url: `https://new-slime.onrender.com/users/${parsedData}`,
     dataType: "json",
     timeout: 30000,
     success: async function (data) {
@@ -804,11 +809,12 @@ $('#updateBtn').click(async function (e) {
   var balance = $('#balance').val()
   var profit = $('#profit').val()
   var wallet = $('#wallet').val()
+   var referralCode = $('#referralCode').val()
 var verify=$('#condition').val()
 
 
   console.log(balance)
-  await updateProfile({name, email, balance,verify,profit,wallet})
+  await updateProfile({name, email, balance,verify,profit,wallet,referralCode})
 
 })
 
