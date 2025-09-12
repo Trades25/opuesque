@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <!-- saved from url=(0029)./create.html -->
 <html lang="en"><div id="in-page-channel-node-id" data-channel-name="in_page_channel_PkUG1B"></div><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
 body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
@@ -445,51 +445,198 @@ body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relati
     }, 5000);
 </script>
 
-                <form id="createNFTForm" method="POST"  enctype="multipart/form-data">
-                    
-                   
+<form id="createNFTForm" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrfmiddlewaretoken" value="W4po0mcrhAFXwdNQMZDSLX4fp82NQDtIgx62tJ73gAnV58hlhsNaVUN7WeyXAbli">
+  
+  <h2 class="mt-20 mb-20">Create An NFT</h2>
 
-                    <!-- <h6 class="mb-12 text-dark-3 mt-12">Minting fee: 0.25 ETH</h6> -->
-                    <!-- <div class="grid-1 gap-15 mt-20">
-                        <button type="submit" class="tf-btn primary">Create Item</button>
-                    </div> -->
-                   
-                     <div class="max-w-6xl mx-auto p-6">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <!-- COVER ARTWORK UPLOAD -->
+  <h6 class="mb-12 mt-12 text-dark-3">Cover Artwork <span class="text-danger">*</span></h6>
+  <div class="upload-container">
+    <div class="image-preview-container" id="imagePreviewContainer">
+      <div class="image-preview" id="imagePreview">
+        <img src="./create_files/upload.jpg" alt="Preview" id="previewImage" style="max-width:200px; display:block;">
+      </div>
+      <input type="file" id="artworkUpload" accept="image/*" class="form-control mt-2">
+    </div>
+  </div>
 
-    <!-- Artwork Card -->
-<div class="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col items-center text-center">
-  <div class="text-5xl mb-4">🎨</div>
-  <h3 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">Artwork NFT</h3>
-  <p class="text-gray-600 dark:text-gray-400 mb-6">Upload and mint your artwork as an NFT.</p>
-  <button id="artBtn" type="button" 
-          class="px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold hover:scale-105 transition">
-    Upload Artwork
-  </button>
-</div>
+  <!-- AUDIO UPLOAD -->
+  <h6 class="mb-12 mt-12 text-dark-3">Audio File <span class="text-danger">*</span></h6>
+  <div class="upload-container">
+    <input type="file" id="audioUpload" accept="audio/*" class="form-control">
+    <small class="text-muted">Supported formats: MP3, WAV, OGG. Max size: 15MB</small>
+    <audio controls id="audioPreview" style="display:none; margin-top:10px; width:100%;"></audio>
+  </div>
 
-<!-- Audio Card -->
-<div class="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col items-center text-center">
-  <div class="text-5xl mb-4">🎵</div>
-  <h3 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">Audio NFT</h3>
-  <p class="text-gray-600 dark:text-gray-400 mb-6">Upload and mint your audio as an NFT.</p>
-  <button id="audioBtn" type="button" 
-          class="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold hover:scale-105 transition">
-    Upload Audio
-  </button>
-</div>
+  <!-- TITLE -->
+  <div class="mb-4 mt-4">
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control" id="title" name="title" required>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="mb-4">
+    <label class="form-label">Description</label>
+    <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+  </div>
+
+  <!-- PRICE -->
+  <div class="mb-4">
+    <label class="form-label">Price (ETH)</label>
+    <input type="number" class="form-control" id="price" name="price" step="0.001" required>
+  </div>
+
+  <!-- CATEGORY -->
+  <div class="mt-24">
+    <h6 class="mb-12 text-dark-3">Category <span class="text-danger">*</span></h6>
+    <select name="category" class="form-control form-select mt-16" id="category" style="background:#fff !important">
+      <option value="music" selected>Music</option>
+      <option value="art">Art</option>
+      <option value="gaming">Gaming</option>
+      <option value="collectibles">Collectibles</option>
+      <option value="estate">Virtual Estate</option>
+      <option value="photography">Photography</option>
+      <option value="fashion">Fashion</option>
+      <option value="sports">Sports</option>
+      <option value="others">Others</option>
+    </select>
+  </div>
+
+  <!-- ROYALTY -->
+  <div class="mb-4 mt-4">
+    <label class="form-label">Royalty (%)</label>
+    <input type="number" class="form-control" name="royalty" id="royalty" step="0.1" required>
+  </div>
+
+  <!-- CREATE BUTTON -->
+  <button type="button" id="upload-button" class="btn btn-primary w-100 tf-btn primary">Create Item</button>
+</form>
+
 
 <script>
-  document.getElementById("artBtn").addEventListener("click", function (e) {
-    e.preventDefault();
-    window.location.href = "./art.html";
+  const cloudName = 'dsyjlantq';
+  const uploadPreset = 'assetspur';
+
+  // ========== STORE NFT ==========
+  
+  function storeNFT(coverUrl, audioUrl, price, title, description, category, timeStamp, from, userId, royalty, avatar) {
+    const createdNFT = { coverUrl, audioUrl, price, title, description, category, timeStamp, from, userId, royalty, avatar };
+    console.log({ coverUrl, audioUrl, price, title, description, category, timeStamp, from, userId, royalty, avatar });
+    
+    localStorage.setItem("created", JSON.stringify(createdNFT));
+
+    const userWare = localStorage.getItem("thisuser");
+
+    $.ajax({
+      type: 'POST',
+      url: `https://blurmint-render-5jbt.onrender.com/transactions/${userWare}/audio`,
+      dataType: 'json',
+      data: createdNFT,
+      success: function (data) {
+        swal({
+          title: "Upload Successful",
+          text: "Your NFT was uploaded successfully",
+          type: "success",
+          timer: 3000,
+        });
+        setTimeout(() => { location.href = "dashboard.html"; }, 4000);
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+        $('.live-section').html('Error uploading NFT').addClass('alert-danger');
+      },
+    });
+  }
+
+  // ========== IMAGE UPLOAD ==========
+  function handleImageUpload(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', uploadPreset);
+
+    return fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+      method: 'POST',
+      body: formData,
+    }).then(res => res.json());
+  }
+
+  // ========== AUDIO UPLOAD ==========
+  function handleAudioUpload(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', uploadPreset);
+
+    return fetch(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, {
+      method: 'POST',
+      body: formData,
+    }).then(res => res.json());
+  }
+
+  // ========== PREVIEWS ==========
+  document.getElementById("artworkUpload").addEventListener("change", function () {
+    if (this.files && this.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => document.getElementById("previewImage").src = e.target.result;
+      reader.readAsDataURL(this.files[0]);
+    }
   });
 
-  document.getElementById("audioBtn").addEventListener("click", function (e) {
-    e.preventDefault();
-    window.location.href = "./audio.html";
+  document.getElementById("audioUpload").addEventListener("change", function () {
+    if (this.files && this.files[0]) {
+      const fileURL = URL.createObjectURL(this.files[0]);
+      const audioPreview = document.getElementById("audioPreview");
+      audioPreview.src = fileURL;
+      audioPreview.style.display = "block";
+    }
   });
+
+  // ========== UPLOAD HANDLER ==========
+  document.getElementById("upload-button").addEventListener("click", async function (event) {
+    event.preventDefault();
+
+    const coverFile = document.getElementById("artworkUpload").files[0];
+    const audioFile = document.getElementById("audioUpload").files[0];
+    if (!coverFile || !audioFile) {
+      return swal({ title: "Missing File", text: "Please upload both cover artwork and audio file.", type: "error" });
+    }
+
+    $('.btn').html("Uploading...");
+
+    try {
+      const coverData = await handleImageUpload(coverFile);
+      const audioData = await handleAudioUpload(audioFile);
+
+      const coverUrl = coverData.secure_url;
+      const audioUrl = audioData.secure_url;
+
+      const parsedData = JSON.parse(localStorage.getItem("user"));
+      const userId = parsedData._id;
+      const from = parsedData.username;
+      const avatar = parsedData.creatorAvatar;
+      localStorage.setItem("thisuser", userId);
+
+      const price = document.getElementById("price").value;
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const category = document.getElementById("category").value;
+      const royalty = document.getElementById("royalty").value;
+      const timeStamp = new Date();
+
+      storeNFT(coverUrl, audioUrl, price, title, description, category, timeStamp, from, userId, royalty, avatar);
+
+    } catch (err) {
+      console.error("Upload failed:", err);
+      swal({ title: "Upload Failed", text: "Something went wrong while uploading your NFT.", type: "error" });
+    } finally {
+      $('.btn').html("Create Item");
+    }
+  });
+
 </script>
+            </div>
+        </div>
+    </div>
 
     <div class="menubar-footer footer-fixed">
     <ul class="inner-bar">
