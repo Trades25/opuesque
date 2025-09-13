@@ -210,6 +210,10 @@
                         </div>
                         <div class="card-body">
                             <img id="imaging" class="artwork-image mb-3" alt="Artwork Image">
+                            <audio id="audioPlayer"  controls style="margin-top: 10px; width: 100%;display: none;">
+                <source src=" "   type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
                             <form id="userForm">
                                  <div class="mb-3">
                                     <label for="category" class="form-label">ld</label>
@@ -334,7 +338,8 @@
           royalty,
           creatorAvatar,
           currentBid,
-          status },
+          status,
+        audio},
       timeout: 30000,
       success: function () {
         $('.live-section').addClass("alert-primary").text("Profile updated successfully")
@@ -397,6 +402,14 @@
          $('#currentBid').val(userInfo.currentBid);
         $('#_id').val(userInfo._id);
        $('#royalty').val(userInfo.royalty);
+       if(userInfo.audio){
+
+  var audioPlayer=document.querySelector('#audioPlayer')
+  audioPlayer.style="display:flex;width:100%;"
+  audioPlayer.src=userInfo.audio
+        localStorage.setItem("audio",userInfo.audio)
+       }
+     
     });
     $('#updateBtn').click(async function (e) {
         e.preventDefault();
@@ -415,6 +428,7 @@
         var _id= $('#_id').val();
          var creator= $('#creator').val();
         var royalty= $('#royalty').val();
+         var audio= localStorage.getItem("audio")
         var artwormg=localStorage.getItem("artwormg")
         var image=artwormg
         console.log({ _id, image,
@@ -428,7 +442,8 @@
           royalty,
           creatorAvatar,
           currentBid,
-          status });
+          status,
+        audio });
          await updateProfile({_id, image,
           price ,
           title,
@@ -440,7 +455,8 @@
           royalty,
           creatorAvatar,
           currentBid,
-          status  }
+          status,
+        audio  }
 )
     });
 </script>
