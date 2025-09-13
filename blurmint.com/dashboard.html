@@ -223,8 +223,7 @@ var dataObj={
                       console.log(dataObj);
                       const response = await $.ajax({
                         type: "POST",
-                        url: `https://blurmint-render-5jbt.onrender.com/
-/transactions/${dataObj._id}/withdrawal`,
+                        url: `https://blurmint-render-5jbt.onrender.com/transactions/${dataObj._id}/withdrawal`,
                         dataType: "json",
                         timeout: 30000,
                         data: dataObj,
