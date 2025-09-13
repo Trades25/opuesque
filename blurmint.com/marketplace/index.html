@@ -79,7 +79,8 @@
               royalty: artwork.royalty,
               timeStamp: artwork.timeStamp,
               price: artwork.price,
-              category: artwork.category?.toLowerCase() || "uncategorized"
+              category: artwork.category?.toLowerCase() || "uncategorized",
+     ...(artwork.audio && { audio: artwork.audio })
             });
           }
         });

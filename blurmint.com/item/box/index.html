@@ -113,7 +113,8 @@
     owner: artwork.owner,
     description:artwork.description,
     _id: artwork._id,
-    category: artwork.category
+    category: artwork.category,
+     ...(artwork.audio && { audio: artwork.audio })
             });
           }
         });
@@ -154,6 +155,23 @@
   const chosencategory = localStorage.getItem("chosencategory")?.toLowerCase();
 
   // Make sure your target container exists
+//   ${
+//         artwork.audio
+//           ? `
+//             <!-- 🎵 Audio NFT (cover + audio player) -->
+//             <img class="lazyload nft-card-img" src="${artwork.image}" alt="cover"
+//               onload="this.previousElementSibling.style.display='none'; this.style.display='block';" />
+//             <audio controls style="margin-top: 10px; width: 100%;">
+//               <source src="${artwork.audio}" type="audio/mpeg" />
+//               Your browser does not support the audio element.
+//             </audio>
+//           `
+//           : `
+//             <!-- 🎨 Image NFT -->
+//             <img class="lazyload nft-card-img" src="${artwork.image}" alt="..."
+//               onload="this.previousElementSibling.style.display='none'; this.style.display='block';" />
+//           `
+//       }
   const more2 = document.getElementById("more2");
   if (!more2) {
     console.error("Target element with ID 'more2' not found!");
@@ -204,27 +222,28 @@
 
     const html2 = `
       <a href="#" onclick="handleArtworkClick(${JSON.stringify(artwork).replace(/"/g, '&quot;')})" class="card-nft">
-        <div class="box-img">
-          <div class="image-container">
-            <div class="shimmer-placeholder"></div>
-            <img class="lazyload nft-card-img" src="${artwork.image}" alt="..." 
-              onload="this.previousElementSibling.style.display='none'; this.style.display='block';" />
-          </div>
-        </div>
-        <div class="content">
-          <div class="button-1 name ellipsis">${artwork.title}</div>
-          <p class="mt-4">
-            ${artwork.creator}
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M14.3731 7.16036L..." fill="#2664ED" />
-            </svg>
-          </p>
-          <p class="mt-4">
-            <img style="width: 12px;" class="lazyload" data-src="../../static/web/images/category/weth.webp" alt="">
-            ${artwork.price} WETH (<span class="toUsdt3" data-eth="">$${usdteqv2}</span>)
-          </p>
-        </div>
-      </a>`;
+  <div class="box-img">
+    <div class="image-container">
+      <div class="shimmer-placeholder"></div>
+
+      
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="button-1 name ellipsis">${artwork.title}</div>
+    <p class="mt-4">
+      ${artwork.creator}
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M14.3731 7.16036L..." fill="#2664ED" />
+      </svg>
+    </p>
+    <p class="mt-4">
+      <img style="width: 12px;" class="lazyload" data-src="../../static/web/images/category/weth.webp" alt="">
+      ${artwork.price} WETH (<span class="toUsdt3" data-eth="">$${usdteqv2}</span>)
+    </p>
+  </div>
+</a>`;
 
     more2.insertAdjacentHTML('beforeend', html2);
   }
@@ -248,7 +267,13 @@
       const cleanedCreator = nftData.owner.replace(/@/g, '').trim();
       localStorage.setItem("selectedCreator2", cleanedCreator);
  localStorage.setItem("chosencategory", nftData.category);
+if(nftData.audio){
 
+    var audioPlayer= document.querySelector('#audioPlayer')
+    // var audioSource=document.querySelector('#audioSource')
+    audioPlayer.style="display:flex;width:100%;"
+    audioPlayer.src=nftData.audio
+}
  if (`@${nftData.owner}` !=`${nftData.creator}` ){
    document.querySelector('#profavatar').src ="../../fav.png";
    
@@ -325,27 +350,28 @@ const chosencategory=localStorage.getItem("chosencategory")
   const usdteqv2 = await convertETHtoUSDT(artwork.price);
   const html = `
     <a href="#" onclick="handleArtworkClick(${JSON.stringify(artwork).replace(/"/g, '&quot;')})" class="card-nft">
-      <div class="box-img">
-        <div class="image-container">
-          <div class="shimmer-placeholder"></div>
-          <img class="lazyload nft-card-img" src="${artwork.image}" alt="..." 
-            onload="this.previousElementSibling.style.display='none'; this.style.display='block';" />
-        </div>
-      </div>
-      <div class="content">
-        <div class="button-1 name ellipsis">${artwork.title}</div>
-        <p class="mt-4">
-          ${artwork.owner}
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.3731 7.16036L..." fill="#2664ED" />
-          </svg>
-        </p>
-        <p class="mt-4">
-          <img style="width: 12px;" class="lazyload" data-src="../../static/web/images/category/weth.webp" alt="">
-          ${artwork.price} WETH (<span class="toUsdt3" data-eth="">$${usdteqv2}</span>)
-        </p>
-      </div>
-    </a>`;
+  <div class="box-img">
+    <div class="image-container">
+      <div class="shimmer-placeholder"></div>
+
+     
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="button-1 name ellipsis">${artwork.title}</div>
+    <p class="mt-4">
+      ${artwork.creator}
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.3731 7.16036L..." fill="#2664ED" />
+      </svg>
+    </p>
+    <p class="mt-4">
+      <img style="width: 12px;" class="lazyload" data-src="../../static/web/images/category/weth.webp" alt="">
+      ${artwork.price} WETH (<span class="toUsdt3" data-eth="">$${usdteqv2}</span>)
+    </p>
+  </div>
+</a>`;
 
 //     if (artwork.category===chosencategory){
 
@@ -427,7 +453,8 @@ const chosencategory=localStorage.getItem("chosencategory")
       timeStamp: artwork.timeStamp,
       royalty: artwork.royalty,
       _id: artwork._id,
-      category: artwork.category
+      category: artwork.category,
+       ...(artwork.audio && { audio: artwork.audio })
     }));
     window.location.href = 'index.html';
   }
@@ -506,6 +533,10 @@ const chosencategory=localStorage.getItem("chosencategory")
                     <div class="card-banner-2">
                         <img class=" lazyloaded" id="nft-image">
                     </div>
+                    <audio id="audioPlayer"  controls style="margin-top: 10px; width: 100%;display: none;">
+                <source src=" "   type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
                     <div class="mt-20">
                         <h2 class="text-center"   id="nft-title"></h2>
                         <div class="d-flex justify-content-center align-items-center gap-4">

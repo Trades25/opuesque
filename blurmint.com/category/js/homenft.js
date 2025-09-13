@@ -28,7 +28,8 @@
                 royalty: artwork.royalty,
                 timeStamp: artwork.timeStamp,
                 price: artwork.price,
-                category: artwork.category?.toLowerCase() || "uncategorized"
+                category: artwork.category?.toLowerCase() || "uncategorized",
+     ...(artwork.audio && { audio: artwork.audio })
               });
             }
           });
@@ -145,7 +146,8 @@
            owner: nft.owner,
            description:nft.description,
           timeStamp: nft.timeStamp,
-          category: nft.category?.toLowerCase() || "uncategorized"
+          category: nft.category?.toLowerCase() || "uncategorized",
+     ...(nft.audio && { audio: nft.audio })
         };
         localStorage.setItem('nftCard', JSON.stringify(nftCard));
         window.location.href = './item/box/index.html';

@@ -36,7 +36,8 @@ async function fetchNFTs() {
               timeStamp: artwork.timeStamp,
               price: artwork.price,
               description: artwork.description,
-              category: normalizedCategory
+              category: normalizedCategory,
+                ...(artwork.audio && { audio: artwork.audio })  // 👈 adds audio only if it exists
             });
           }
         });
@@ -171,20 +172,22 @@ async function loadNFTs() {
     const nftTitle = card.dataset.nftTitle;
     const nft = artworks.find(n => n.title === nftTitle);
     if (nft) {
-      const nftCard = {
-        title: nft.title,
-        creator: nft.creator,
-        creatorAvatar: nft.creatorAvatar,
-        currentBid: nft.currentBid,
-        price: nft.price,
-        image: nft.image,
-        _id: nft._id,
-        royalty: nft.royalty,
-        owner: nft.owner,
-        description: nft.description,
-        timeStamp: nft.timeStamp,
-        category: nft.category
-      };
+     const nftCard = {
+  title: nft.title,
+  creator: nft.creator,
+  creatorAvatar: nft.creatorAvatar,
+  currentBid: nft.currentBid,
+  price: nft.price,
+  image: nft.image,
+  _id: nft._id,
+  royalty: nft.royalty,
+  owner: nft.owner,
+  description: nft.description,
+  timeStamp: nft.timeStamp,
+  category: nft.category,
+  ...(nft.audio && { audio: nft.audio }) // 👈 adds audio only if it exists
+};
+
       localStorage.setItem('nftCard', JSON.stringify(nftCard));
       window.location.href = '../../item/box/index.html';
     }
