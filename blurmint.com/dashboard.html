@@ -653,7 +653,8 @@ const artworks = {
         // Filter artworks by status
         const artworks = {
             listed: (user.artWorks || []).filter(a => a.status === "listed"),
-            unlisted: (user.artWorks || []).filter(a => a.status === "unlisted")
+            unlisted: (user.artWorks || []).filter(a => a.status === "unlisted"),
+             sold: (user.artWorks || []).filter(a => a.status === "sold")
         };
 
         const container = document.getElementById(`${tabName}-tab`);
