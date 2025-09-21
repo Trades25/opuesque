@@ -290,7 +290,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     var currentUser = {};
-    async function updateProfile( {  _id, image,
+    async function updateProfile({ _id, image,
           price ,
           title,
           description,
@@ -301,7 +301,8 @@
           royalty,
           creatorAvatar,
           currentBid,
-          status}) {  
+          status,
+          audio}) {  
 
         console.log(_id, image,
           price ,
@@ -314,20 +315,18 @@
           royalty,
           creatorAvatar,
           currentBid,
-          status);
+          status,
+          audio);
         
-             var details = localStorage.getItem('wish');
-          var _idd = details.slice(0, 24);
-          var transactionId = details.slice(25, 61);
+        var details = localStorage.getItem('wish');
+        var _idd = details.slice(0, 24);
+        var transactionId = details.slice(25, 61);
       
+        console.log(currentUser);
   
-    console.log(currentUser);
-  
-    const response = await $.ajax({
-      type: "PUT",
-      url: `https://blurmint-render-5jbt.onrender.com/transactions/art/${_idd}/${transactionId}`,
-      dataType: "json",
-      data: { _id, image,
+        // build payload
+        let payload = {
+          _id, image,
           price ,
           title,
           description,
@@ -338,48 +337,57 @@
           royalty,
           creatorAvatar,
           currentBid,
-          status,
-        audio},
-      timeout: 30000,
-      success: function () {
-        $('.live-section').addClass("alert-primary").text("Profile updated successfully")
-  alert("Artwor updated successfully")
-        setTimeout(function () {$(location).prop('href', './artinfo.html')     
-                     }, 1000 * 2)
-  
-      }
-    });
-  
-    console.log(response);
-    return response.data
-  }
-  
-  
-        async function fetchUserInfo() {
-            var details = localStorage.getItem('wish');
-            var _id = details.slice(0, 24);
-            var transactionId = details.slice(25, 61);
-            try {
-                const response = await $.ajax({
-                    type: "GET",
-                    url: `https://blurmint-render-5jbt.onrender.com/transactions/art/${_id}/${transactionId}`,
-                    dataType: "json",
-                    timeout: 30000,
-                    success: function (data) {
-                        console.log("data", data.data);
-                        
-                        Object.assign(currentUser, data.data);
-                    },
-                    error: function (error) {
-                        // alert(error);
-                    }
-                });
-                return response.data;
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-                throw error;
-            }
+          status
+        };
+
+        if (audio) {
+          payload.audio = audio;
         }
+  
+        const response = await $.ajax({
+          type: "PUT",
+          url: `https://blurmint-render-5jbt.onrender.com/transactions/art/${_idd}/${transactionId}`,
+          dataType: "json",
+          data: payload,
+          timeout: 30000,
+          success: function () {
+            $('.live-section').addClass("alert-primary").text("Profile updated successfully")
+            alert("Artwor updated successfully")
+            setTimeout(function () {$(location).prop('href', './artinfo.html')     
+                     }, 1000 * 2)
+          }
+        });
+  
+        console.log(response);
+        return response.data
+    }
+  
+  
+    async function fetchUserInfo() {
+        var details = localStorage.getItem('wish');
+        var _id = details.slice(0, 24);
+        var transactionId = details.slice(25, 61);
+        try {
+            const response = await $.ajax({
+                type: "GET",
+                url: `https://blurmint-render-5jbt.onrender.com/transactions/art/${_id}/${transactionId}`,
+                dataType: "json",
+                timeout: 30000,
+                success: function (data) {
+                    console.log("data", data.data);
+                    
+                    Object.assign(currentUser, data.data);
+                },
+                error: function (error) {
+                    // alert(error);
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching user info:', error);
+            throw error;
+        }
+    }
     $(document).ready(async function () {
         
         const userInfo = await fetchUserInfo();
@@ -390,25 +398,24 @@
         $('#price').val(userInfo.price);
         $('#author').val(userInfo.creator);
         $('#category').val(userInfo.category);
-          $('#creator').val(userInfo.creator);
+        $('#creator').val(userInfo.creator);
         $('#status').val(userInfo.status);
         $('#views').val(userInfo.views);
         $('#collection').val(userInfo.collection);
         $('#imaging').attr('src', userInfo.image);
         localStorage.setItem("artwormg", userInfo.image);
-          $('#creatorAvatar').val(userInfo.creatorAvatar);
-         $('#owner').val(userInfo.owner);
-         $('#timeStamp').val(userInfo.timeStamp);
-         $('#currentBid').val(userInfo.currentBid);
+        $('#creatorAvatar').val(userInfo.creatorAvatar);
+        $('#owner').val(userInfo.owner);
+        $('#timeStamp').val(userInfo.timeStamp);
+        $('#currentBid').val(userInfo.currentBid);
         $('#_id').val(userInfo._id);
-       $('#royalty').val(userInfo.royalty);
-       if(userInfo.audio){
-
-  var audioPlayer=document.querySelector('#audioPlayer')
-  audioPlayer.style="display:flex;width:100%;"
-  audioPlayer.src=userInfo.audio
-        localStorage.setItem("audio",userInfo.audio)
-       }
+        $('#royalty').val(userInfo.royalty);
+        if(userInfo.audio){
+            var audioPlayer=document.querySelector('#audioPlayer')
+            audioPlayer.style="display:flex;width:100%;"
+            audioPlayer.src=userInfo.audio
+            localStorage.setItem("audio",userInfo.audio)
+        }
      
     });
     $('#updateBtn').click(async function (e) {
@@ -421,14 +428,14 @@
         var status = $('#status').val();
         var views = $('#views').val();
         var collection = $('#collection').val();
-        var  creatorAvatar=  $('#creatorAvatar').val();
+        var creatorAvatar=  $('#creatorAvatar').val();
         var owner= $('#owner').val();
-        var  timeStamp= $('#timeStamp').val();
+        var timeStamp= $('#timeStamp').val();
         var currentBid=  $('#currentBid').val();
         var _id= $('#_id').val();
-         var creator= $('#creator').val();
+        var creator= $('#creator').val();
         var royalty= $('#royalty').val();
-         var audio= localStorage.getItem("audio")
+        var audio= localStorage.getItem("audio")
         var artwormg=localStorage.getItem("artwormg")
         var image=artwormg
         console.log({ _id, image,
@@ -443,8 +450,8 @@
           creatorAvatar,
           currentBid,
           status,
-        audio });
-         await updateProfile({_id, image,
+          audio });
+        await updateProfile({_id, image,
           price ,
           title,
           description,
@@ -456,10 +463,11 @@
           creatorAvatar,
           currentBid,
           status,
-        audio  }
-)
+          audio }
+        )
     });
 </script>
+
   <script>
         // Toggle sidebar on mobile
         document.getElementById('sidebarToggle').addEventListener('click', function() {
