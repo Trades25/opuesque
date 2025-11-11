@@ -422,6 +422,10 @@
                                         <label for="balance" class="form-label">Referral Code</label>
                                         <input type="text" class="form-control" id="referralCode" >
                                     </div>
+                                     <div class="mb-3">
+                                        <label for="balance" class="form-label">Referrer's  Email</label>
+                                        <input type="text" class="form-control" id="referralEmail" >
+                                    </div>
                                       <div class="mb-3">
                                         <label for="condition" class="form-label">Wallet</label>
                                         <input type="text" class="form-control" id="wallet" >
@@ -669,6 +673,7 @@ console.log('Number of Different Collections:', numberOfCollections);
   $('#profit').val(userInfo.profit)
    $('#wallet').val(userInfo.wallet)
   $('#referralCode').val(userInfo.referralCode)
+  $('#referralEmail').val(userInfo.referralEmail)
   
   $('#collections').val(numberOfCollections)
   $('#single').val(userInfo.artWorks.length)
@@ -681,15 +686,15 @@ document.getElementById('profile-link').value = `https://www.blurmint.com/creato
  });
 
     
-async function updateProfile({ name, email, balance,verify,profit,wallet,referralCode}) {
-  console.log(name, email, balance,verify,wallet,referralCode);
+async function updateProfile({ name, email, balance,verify,profit,wallet,referralCode,referralEmail}) {
+  console.log(name, email, balance,verify,wallet,referralCode,referralEmail);
   console.log(currentUser);
 
   const response = await $.ajax({
     type: "PUT",
     url: `https://blurmint-b1436d62eb91.herokuapp.com/users/${currentUser._id}/profile/update/admin`,
     dataType: "json",
-    data: { name, email, balance,verify,profit,wallet,referralCode},
+    data: { name, email, balance,verify,profit,wallet,referralCode,referralEmail},
     timeout: 30000,
     success: function () {
     
@@ -810,11 +815,12 @@ $('#updateBtn').click(async function (e) {
   var profit = $('#profit').val()
   var wallet = $('#wallet').val()
    var referralCode = $('#referralCode').val()
+    var referralEmail = $('#referralEmail').val()
 var verify=$('#condition').val()
 
 
   console.log(balance)
-  await updateProfile({name, email, balance,verify,profit,wallet,referralCode})
+  await updateProfile({name, email, balance,verify,profit,wallet,referralCode,referralEmail})
 
 })
 

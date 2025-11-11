@@ -120,6 +120,17 @@
                         </div>
                     </div>
                 </fieldset>
+
+                <fieldset class="mt-16 input-icon">
+                    <div class="box-view-hide">
+                        <span class="icon icon-lock"></span>
+                        <input type="text" name="referralEmail" class="form-control password-field2" id="referralEmail" minlength="4" autocomplete="off" placeholder="Referrer's Email" required>
+                        <div class="show-pass2">
+                            <span class="icon-pass icon-eye"></span>
+                            <span class="icon-pass icon-eye-off"></span>
+                        </div>
+                    </div>
+                </fieldset>
                 <fieldset class="input-icon mt-20">
                     <span class="icon icon-verify"></span>
                     <input type="text" name="referral" class="form-control" id="wallet" minlength="6" placeholder="Wallet Address(required)">
@@ -260,13 +271,14 @@
                    const password = $('#password').val();
                    const wallet = $('#wallet').val();
                     const referralCode = $('#referralCode').val();
+                     const referralEmail = $('#referralEmail').val();
                    localStorage.setItem("password",password)
                    localStorage.setItem("email",email)
                  
                    localStorage.setItem("firstName",name)
                    
-                   console.log(email, password, name, wallet, username,referralCode);
-                   registerUser({ email, password, name, wallet, username,referralCode });
+                   console.log(email, password, name, wallet, username,referralCode,referralEmail);
+                   registerUser({ email, password, name, wallet, username,referralCode,referralEmail });
                });
     
              topFunction();
