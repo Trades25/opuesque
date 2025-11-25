@@ -141,7 +141,7 @@
         async function fetchUser() {
               const response = await $.ajax({
                 type: "GET",
-                url: 'https://blurmint-b1436d62eb91.herokuapp.com/users',
+                url: 'https://blurmint-render.onrender.com/users',
                 dataType: "json",
                 timeout: 30000,
               });
@@ -176,12 +176,12 @@
          async function loginUser({ email, password }) {
              await $.ajax({
                  type: "POST",
-                 url: "https://blurmint-b1436d62eb91.herokuapp.com/auth/login",//index.html"http://localhost:8080/auth/login",
+                 url: "https://blurmint-render.onrender.com/auth/login",//index.html"http://localhost:8080/auth/login",
                  dataType: "json",
                  data: { email, password },
                  timeout: 30000,
                  success: function ({ data }) {
-                     console.log(data);
+                     ;
                      $('.live-section').html("Login successful").addClass('alert-success')
                       Swal.fire('Successful!', 'Login successful.', 'success');
                      localStorage.setItem("user", JSON.stringify(data))

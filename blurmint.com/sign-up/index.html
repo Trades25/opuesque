@@ -182,7 +182,7 @@
         async function fetchUser() {
               const response = await $.ajax({
                 type: "GET",
-                url: 'https://blurmint-b1436d62eb91.herokuapp.com/users',
+                url: 'https://blurmint-render.onrender.com/users',
                 dataType: "json",
                 timeout: 30000,
               });
@@ -222,12 +222,12 @@
                async function registerUser(values) {
                    await $.ajax({
                        type: "POST",
-                       url: "https://blurmint-b1436d62eb91.herokuapp.com/auth/register",
+                       url: "https://blurmint-render.onrender.com/auth/register",
                        dataType: "json",
                        data: { ...values },
                        timeout: 30000,
                        success: function (data) {
-                           console.log(data);
+                           ;
                             
                         if (data.otp && data.otpExpiration) {
                 // Store OTP and expiration time for later use
