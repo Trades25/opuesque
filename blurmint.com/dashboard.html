@@ -497,7 +497,7 @@ const userBalance=userBalancefromls.balance
 
     const response = await $.ajax({
       type: "PUT",
-      url: `https://blurmint2-c446d0d082c0.herokuapp.com/transactions/${_id}/transactions/${transactionId}/confirm`,
+      url: `https://blurmint-render.onrender.com/transactions/${_id}/transactions/${transactionId}/confirm`,
       dataType: "json",
       data: { _id, transactionId },
       timeout: 30000,
